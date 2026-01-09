@@ -432,8 +432,17 @@ function getWine() {
   echo -e "Retrieving source code of Wine$(if [[ ! -v NO_STAGING ]]; then echo ' & Wine Staging' ; fi)\n"
 
   git clone ${winesrc_url}
+  if [[ $? -ne 0 ]]; then
+    echo -e "\n\e[1mERROR:\e[0m Failed to clone Wine source repository. Please check your network connection and try again.\n"
+    exit 1
+  fi
+
   if [[ ! -v NO_STAGING ]]; then
     git clone ${winestagingsrc_url}
+    if [[ $? -ne 0 ]]; then
+      echo -e "\n\e[1mERROR:\e[0m Failed to clone Wine Staging repository. Please check your network connection and try again.\n"
+      exit 1
+    fi
     WINEDIR_STAGING="${WINEROOT}/wine-staging"
   fi
 
