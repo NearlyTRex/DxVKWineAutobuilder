@@ -288,7 +288,7 @@ The script strongly recommends ~\e[1m$((${REC_SPACE} / 1000)) GB\e[0m at least t
 Be aware that the script process may fail because of this, especially while compiling Wine Staging.\n\n\
 Do you really want to continue? [Y/n]"
 
-  AVAIL_RAM=$(( $(grep -oP "(?<=^MemFree:).*[0-9]" /proc/meminfo | sed 's/ //g') / 1024 ))
+  AVAIL_RAM=$(( $(grep -oP "(?<=^MemAvailable:).*[0-9]" /proc/meminfo | sed 's/ //g') / 1024 ))
   REC_RAM=4096
   MSG_RAM="\e[1mWARNING:\e[0m Not sufficient RAM available\n\nCompilation processes will likely fail.\n\
 The script strongly recommends ~\e[1m${REC_RAM} MB\e[0m at least to compile software successfully but you have only\n\
