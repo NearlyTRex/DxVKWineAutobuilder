@@ -626,11 +626,11 @@ function WineDeps() {
   case ${method} in
     install)
       str="Installing"
-      mgrcmd="sudo apt install -y"
+      mgrcmd="sudo DEBIAN_FRONTEND=noninteractive apt install -y"
       ;;
     remove)
       str="Removing"
-      mgrcmd="sudo apt purge --remove -y"
+      mgrcmd="sudo DEBIAN_FRONTEND=noninteractive apt purge --remove -y"
       ;;
     *)
       echo -e "\e[1mERROR:\e[0m Unknown package management input method. Aborting\n"
@@ -953,7 +953,7 @@ function wineCheck() {
   # Check if any of these Wine packages are present on the system
   for winepkg in ${known_wines[@]}; do
     if [[ $(echo $(dpkg -s ${winepkg} &>/dev/null)$?) -eq 0 ]]; then
-      sudo apt purge --remove -y ${winepkg}
+      sudo DEBIAN_FRONTEND=noninteractive apt purge --remove -y ${winepkg}
     fi
   done
 
@@ -1055,7 +1055,7 @@ fi
 # Build time dependencies which were installed but no longer needed
 if [[ -v buildpkglist ]]; then
   if [[ -v BUILDPKG_RM ]]; then
-    sudo apt purge --remove -y ${buildpkglist[*]}
+    sudo DEBIAN_FRONTEND=noninteractive apt purge --remove -y ${buildpkglist[*]}
   else
     echo -e "The following build time dependencies were installed and no longer required:\n\n$(for l in ${buildpkglist[*]}; do echo -e ${l}; done)\n"
   fi
@@ -1064,7 +1064,7 @@ fi
 ############################
 
 if [[ -v GIRL_CHECK ]]; then
-  sudo apt install -y ${girlpkg}
+  sudo DEBIAN_FRONTEND=noninteractive apt install -y ${girlpkg}
 fi
 
 ########################################################

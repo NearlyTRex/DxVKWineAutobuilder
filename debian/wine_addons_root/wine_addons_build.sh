@@ -129,7 +129,7 @@ known_wines=(
 # As this seems to be a dependency for binutils-mingw packages
 
 if [[ $(dpkg -s "binutils-common" &>/dev/null)$? -ne 0 ]]; then
-  sudo apt -y install "binutils-common"
+  sudo DEBIAN_FRONTEND=noninteractive apt -y install "binutils-common"
 fi
 
 binutils_ver=$(dpkg -s "binutils-common" | sed -rn 's/^Version: ([0-9\.]+).*$/\1/p')
@@ -729,7 +729,7 @@ function get_locked_packages() {
     done
 
     function pkg_remoteinstall() {
-      sudo apt install -y ${1} &> /dev/null
+      sudo DEBIAN_FRONTEND=noninteractive apt install -y ${1} &> /dev/null
     }
 
     function pkg_localinstall() {
@@ -983,7 +983,7 @@ function buildpkg_removal() {
   # Build time dependencies which were installed but no longer needed
   if [[ -v _buildpkglist ]]; then
     if [[ -v BUILDPKG_RM ]]; then
-      sudo apt purge --remove -y ${_buildpkglist[*]}
+      sudo DEBIAN_FRONTEND=noninteractive apt purge --remove -y ${_buildpkglist[*]}
 
       # In some cases, glslang or meson may still be present on the system. Remove them
       for _extrapkg in glslang meson; do
@@ -992,7 +992,7 @@ function buildpkg_removal() {
         fi
       done
       # Manually obtained deb packages are expected to break system configuration, thus we need to fix it.
-      sudo apt --fix-broken -y install
+      sudo DEBIAN_FRONTEND=noninteractive apt --fix-broken -y install
 
     else
       echo -e "The following build time dependencies were installed and no longer needed:\n\n$(for l in ${_buildpkglist[*]}; do echo -e ${l}; done)\n"

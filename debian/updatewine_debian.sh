@@ -247,7 +247,7 @@ function coredeps_check() {
 
     if [[ $(echo $(dpkg -s ${coredep} &>/dev/null)$?) -ne 0 ]]; then
       echo -e "Installing core dependency ${coredep}.\n"
-      sudo apt install -y ${coredep}
+      sudo DEBIAN_FRONTEND=noninteractive apt install -y ${coredep}
       if [[ $? -ne 0 ]]; then
         echo -e "Could not install ${coredep}. Aborting.\n"
         exit 1
